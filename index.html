@@ -1,30 +1,849 @@
-<html>
-  <head>
-    <script src="js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">
-    $(function () {
-        $.ajax({
-            type: "get",
-            url: "http://81.68.251.162/api/handle", // 这个就是不同于当前域的一个URL地址，这里单纯演示，所以同域
-            dataType: "jsonp",
-            jsonp: "jsonpcallback",  // 指定回调函数，这里名字可以为其他任意你喜欢的，比如callback，不过必须与下一行的GET参数一致
-            data: "op=getTips&page=1&key=&timestamp=&type=0&cate=&jsonpcallback=?", // jsonpcallback与上面的jsonp值一致
-            success: function (json) {
-              jsonpcallback(json);
+
+
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>云线报-实时同步全网折扣</title>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="css/mobileyhg.css?20053">
+    <link href="css/m_style.css?202023" rel="stylesheet" />
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <style>
+        #back-top {
+            position: fixed;
+            width: 100px;
+            height: 50px;
+            bottom: 10px;
+            right: 20px;
+            background: #ccc;
+            text-align: center;
+            line-height: 50px;
+            text-decoration: none;
+        }
+
+        #category {
+            position: fixed;
+            width: 100px;
+            height: 50px;
+            bottom: 70px;
+            right: 20px;
+            background: #ccc;
+            text-align: center;
+            line-height: 50px;
+            text-decoration: none;
+        }
+
+        .nav-counter {
+            position: absolute;
+            top: 2px;
+            right: -8px;
+            min-width: 8px;
+            height: 20px;
+            line-height: 20px;
+            margin-top: -11px;
+            padding: 0 6px;
+            font-weight: normal;
+            color: white;
+            text-align: center;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+            background: #e23442;
+            border: 1px solid #911f28;
+            border-radius: 11px;
+            background-image: -webkit-linear-gradient(top, #e8616c, #dd202f);
+            background-image: -moz-linear-gradient(top, #e8616c, #dd202f);
+            background-image: -o-linear-gradient(top, #e8616c, #dd202f);
+            background-image: linear-gradient(to bottom, #e8616c, #dd202f);
+            -webkit-box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px rgba(0, 0, 0, 0.12);
+            box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-counter-blue {
+            background: #e8616c;
+            border: 1px solid #dd202f;
+            background-image: -webkit-linear-gradient(top, #e8616c, #dd202f);
+            background-image: -moz-linear-gradient(top, #e8616c, #dd202f);
+            background-image: -o-linear-gradient(top, #e8616c, #dd202f);
+            background-image: linear-gradient(to bottom, #e8616c, #dd202f);
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <header class="mgpyh-mobile-top clearfix">
+            <div class="mgpyh-top-gap toggle-line-wrap pull-right">
+
+                <img class="menu" src="imgs/menu.png" id="menu" />
+                <img class="search" src="imgs/search.png?33" />
+            </div>
+            <div id="header">
+                <img class="headerpic" src="imgs/logo1.png" />
+                <img class="leftslogan" src="imgs/leftslogan.png" />
+            </div>
+        </header>
+        <div id="funcareafix" style="display:none">
+            <span class="channelentrance tb currenttab" onclick="go(0)"><span class="entranceword">实时线报</span></span>
+            <span class="channelentrance gn othertab" onclick="go(6)"><span class="entranceword">国内折扣</span></span>
+            <span class="channelentrance ht othertab" onclick="go(8)"><span class="entranceword">海外折扣</span></span>
+            <span class="channelentrance sd othertab" onclick="go(7)"><span class="entranceword">首单小火车</span></span>
+
+            <img class="menu" src="imgs/menu.png?343" />
+
+            <img class="search" src="imgs/search.png" />
+        </div>
+
+        <nav class="navigation">
+            <ul>
+                <li><a id="0"><span class="mobile-sprite mobile-home"></span>实时线报</a></li>
+                <li><a id="6"><span class="mobile-sprite mobile-show"></span>国内折扣</a></li>
+                <li><a id="8"><span class="mobile-sprite mobile-show"></span>海外折扣</a></li>
+                <li><a id="7"><span class="mobile-sprite mobile-bing"></span>首单小火车</a></li>
+                <li><a id="1"><span class="mobile-sprite mobile-download"></span>美团抵扣券</a></li>
+                <li><a id="2"><span class="mobile-sprite mobile-download"></span>饿了么红包</a></li>
+                <li><a id="9"><span class="mobile-sprite mobile-download"></span>美团外卖红包</a></li>
+                <li><a id="3"><span class="mobile-sprite mobile-download"></span>会员视频</a></li>
+                <li><a id="10"><span class="mobile-sprite mobile-download"></span>话费流量活动</a></li>
+                <li><a id="4"><span class="mobile-sprite mobile-download"></span>自助查券</a></li>
+            </ul>
+        </nav>
+        <div class="content_body" style="min-height:800px;">
+            <div id="funcarea">
+                <span class="channelentrance tb currenttab" onclick="go(0)"><span class="entranceword">实时线报</span></span>
+                <span class="channelentrance gn othertab" onclick="go(6)"><span class="entranceword">国内折扣</span></span>
+                <span class="channelentrance ht othertab" onclick="go(8)"><span class="entranceword">海外折扣</span></span>
+                <span class="channelentrance sd othertab" onclick="go(7)"><span class="entranceword">首单小火车</span></span>
+                <span class="channelentrance hf othertab" onclick="go(10)"><span class="entranceword">话费流量活动</span></span>
+                <span class="channelentrance searchres currenttab" style="display:none"><span class="entranceword">搜索结果</span></span>
+            </div>
+
+            <div id="main">
+                <div id="notices" style="font-size:12px;color:red;padding:10px;display: block;float: left;background-color: #ffffff; border-bottom: 1px #eaeaea solid; ">
+                    “云线报”是集国内、海淘主流电商平台不定期促销活动、降价推送、内部线报、首单福利等等为主要功能的实时线报同步平台，线报时效很快库存随时撸空/变价，手慢拍大腿，尤其是晚上定点限量半价叠加券活动，神价特别给力秒杀全网所有平台，商品不管自用还是转手都有利润！
+                </div>
+                <div id="listarea" style="display: block;">
+                </div>
+                <a href="#" id="back-top" style="font-size: 12px;">Top</a>
+                <a id="category" style="font-size: 12px;display:none;">分类</a>
+                <div class="middleline loadmorearea">
+                    <div id="loading" class="loading" style="display: none;"><img class="loadingicon" src="imgs/loadingicon.gif" /><span class="loadingmoreword">加载中，请稍候...</span></div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer-app">
+            <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://"); document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1279348966'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s9.cnzz.com/z_stat.php%3Fid%3D1279348966%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+            <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1279348966'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1279348966%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+        </footer>
+
+    </div>
+
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="Scripts/jquery.timeago.js"></script>
+    <script src="Scripts/clipboard.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="Scripts/layer_mobile/layer.js"></script>
+    <script src="Scripts/endless-pagination.js"></script>
+    <script type="text/javascript">
+        //$(function () {
+        //    $.ajax({
+        //        type: "get",
+        //        url: "http://81.68.251.162/api/handle", // 这个就是不同于当前域的一个URL地址，这里单纯演示，所以同域
+        //        dataType: "jsonp",
+        //        jsonp: "jsonpcallback",  // 指定回调函数，这里名字可以为其他任意你喜欢的，比如callback，不过必须与下一行的GET参数一致
+        //        data: "op=getTips&page=1&key=&timestamp=&type=0&cate=&jsonpcallback=?", // jsonpcallback与上面的jsonp值一致
+        //        success: function (json) {
+        //            jsonpcallback(json);
+        //        }
+        //    });
+
+        //});
+
+        //function jsonpcallback(data) {
+        //    $.each(data, function (i) {
+        //        console.log("[" + i + "] " + data[i].Contents);
+        //    });
+        //}
+    </script>
+    <script>
+
+        $('.menu').click(function () {
+            var that = $(this);
+            $(this).toggleClass('active');
+
+            if ($('.backdrop').length > 0) {
+                $('.backdrop').remove();
+                $('body').removeAttr('style');
+            } else {
+                $('body').css('overflow', 'hidden');
+                $('<div/>', {
+                    class: 'backdrop'
+                }).appendTo($('body')).click(function () {
+                    that.click();
+                })
             }
+            $('nav').toggleClass('open');
+        })
+        $('.navigation li').hover(function () {
+            var classname = $(this).find('span').attr('class');
+            var hovername = classname.split(' ')[1].slice(7) + '-hover';
+            $(this).find('span').addClass(hovername);
+            $(this).siblings().find('span').removeClass('home-hover show-hover bing-hover download-hover');
+        })
+        $('.navigation li a').click(function () {
+            var id = $(this).attr("id");
+            go(id);
+            $("#menu").click();
+            $("#back-top").click();
+        })
+        $.endlessPaginate();
+
+        $('#comment-btn').click(function () {
+            $('#comment-wrap').addClass('move-left');
+            $('#comment-wrap').siblings('.detail').hide();
+        })
+        $('.close-comment').click(function () {
+            $('#comment-wrap').removeClass('move-left');
+            $('#comment-wrap').siblings('.detail').show();
+        })
+    </script>
+    <script type='text/javascript'>
+        var tab = 0; page = 1; dtype = 0; dcate = ""; var timestamp = ""; hasNew = false; isFirst = true; lock = false; isFin = false; key = ""; iswx = false;
+        var rownum = 0;
+        function isWeiXin() {
+            var ua = window.navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                iswx = true;
+            }
+        }
+
+        function timestampToTime(timestamp) {
+            var date = new Date(timestamp);
+            Y = date.getFullYear() + '-';
+            M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            D = date.getDate() + ' ';
+            h = date.getHours() + ':';
+            m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()) + ':';
+            s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
+            return Y + M + D + h + m + s;
+        }
+        $(function () {
+
+            isWeiXin();
+            initstyle();
+            var clipboard = new ClipboardJS('.btn');
+            clipboard.on('success', function (e) {
+                layer.open({
+                    content: '复制成功,打开手淘即可！'
+                    , style: 'background-color:#09C1FF; width:60%; color:#fff; border:none;'
+                    , time: 2
+                });
+            });
+            clipboard.on('error', function (e) {
+            });
+            if (window.location.search.indexOf("vurl") > -1 || window.location.search.indexOf("tv") > -1 || GetQueryString("key") != null) {
+                go(3);
+            }
+            else if (window.location.search.indexOf("hf") > -1) {
+                go(10)
+            }
+            else {
+                getData(page, hasNew);
+                page++;
+            }
+            setInterval(function () {
+                if ((tab == 0 || tab == 6 || tab == 7 || tab == 8) && timestamp != "") {
+                  //  checkHasNew(timestamp);
+                }
+            }, 30000);
+            $(window).scroll(function () {
+                if ($(window).scrollTop() > 800) {
+
+                    $('#back-top').fadeIn(100);
+                    if (tab == 6 || tab == 5 || tab == 8) {
+                        $("#category").fadeIn(100);
+                    }
+                } else {
+                    $("#back-top").fadeOut(100);
+                    if (tab == 6 || tab == 5 || tab == 8) {
+                        $("#category").fadeOut(100);
+                    }
+                }
+            });
+            $(window).scroll(function () {
+                if ($(document).height() - $(this).scrollTop() - $(this).height() < 80) {
+                    if (!lock && !isFin) {
+                        lock = false;
+                        getData(page, false);
+                        page++;
+                    }
+                }
+            });
+            $(window).scroll(function () {
+                if ($(window).scrollTop() > 60) {
+                    $("#funcareafix").show(20);
+                }
+                else {
+                    $("#funcareafix").hide(20);
+                }
+            });
+            $("#back-top").click(function () {
+                if (hasNew) {
+                    $("#back-top").html("Top")
+                    key = "";
+                    lock = true;
+                    if (tab == 5) {
+                        tab = 0;
+                    }
+                    go(tab);
+                    lock = false;
+                }
+                $('body,html').animate({ scrollTop: 0 }, 800);
+                return false;
+            });
         });
-        
-    });
-  
-  function jsonpcallback(data)
-  {
-      $.each(data, function (i) {
-        console.log("["+i+"] "+data[i].Contents);
-      });
-  }
-</script>
-  </head>
-  <body>
-    demo
-    </body>
-  </html>
+        var msg = "";
+        function showDetail(id) {
+            var flag = $("#desc" + id).text();
+            if (flag == "展开全文") {
+                msg = $("#abstract" + id).html();
+                $("#loading").show();
+                var urlData = { op: "getTipDetail", id: id };
+                $.post("api/SearchVideo.ashx", urlData, function (data) {
+                    $("#loading").fadeOut(3000);
+                    $("#abstract" + id).html(data[0].detaildesc);
+                    $("#desc" + id).text("收起全文")
+                });
+            }
+            else {
+                $("#desc" + id).text("展开全文")
+                $("#abstract" + id).html(msg);
+                var t = $("#desc" + id).offset().top;
+                $("html, body").animate({ scrollTop: t - 450 }, 1000)
+            }
+        }
+        function initstyle() {
+            $(".search").click(function () {
+                var html = "<div class=\"searcharea\">"
+                html += "<div class=\"searchareahead\">"
+                html += "<div class=\"searchareaheadword\">搜索平台折扣<\/div>"
+                html += "<img class=\"searchareaheadclose\" id=\"searchareaheadclose\" onclick=\"closeBox()\" src=\"imgs/closeicon.png?v=201402101903\">"
+                html += "</div>"
+                html += "<input class=\"searchfixfield\" onkeydown=\"clickButton()\" type=\"text\" id=\"searchfixfield\" />"
+                html += "<img class=\"searchfixbtn\" id=\"searchfixbtn\" onclick=\"sbscr()\" src=\"imgs/searchicon.png?v=201402101903\">"
+                html += "</div>";
+
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    shadeClose: true,
+                    skin: 'yourclass',
+                    content: html
+                });
+
+            });
+            $("#category").click(function () {
+                var html = "<div class=\"searchareahead\">"
+                html += "<div class=\"searchareaheadword\">选择分类>><\/div>"
+                html += "</div><div>"
+                html += "<span class=\"cateentrance tb othertab\" cate='' onclick=\"selcate(this)\"><span class=\"entranceword\">全部</span></span>"
+                if (dtype == 3) {
+                    html += "<span class=\"cateentrance tb othertab\" cate='zdirect' onclick=\"selcate(this)\"><span class=\"entranceword\">直邮中国</span></span>"
+                }
+                html += "<span class=\"cateentrance tb othertab\" cate='baby' onclick=\"selcate(this)\"><span class=\"entranceword\">母婴</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='daily' onclick=\"selcate(this)\"><span class=\"entranceword\">日用</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='digital' onclick=\"selcate(this)\"><span class=\"entranceword\">数码</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='electrical' onclick=\"selcate(this)\"><span class=\"entranceword\">家电</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='food' onclick=\"selcate(this)\"><span class=\"entranceword\">食品</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='beauty' onclick=\"selcate(this)\"><span class=\"entranceword\">美妆</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='pcare' onclick=\"selcate(this)\"><span class=\"entranceword\">个护</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='accessory' onclick=\"selcate(this)\"><span class=\"entranceword\">配饰</span></span>"
+
+                html += "<span class=\"cateentrance tb othertab\" cate='furniture' onclick=\"selcate(this)\"><span class=\"entranceword\">家具家装</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='medical' onclick=\"selcate(this)\"><span class=\"entranceword\">医疗保健</span></span>"
+
+
+                html += "<span class=\"cateentrance tb othertab\" cate='stationery' onclick=\"selcate(this)\"><span class=\"entranceword\">文具</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='toy' onclick=\"selcate(this)\"><span class=\"entranceword\">玩具</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='book' onclick=\"selcate(this)\"><span class=\"entranceword\">图书</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='womenswear' onclick=\"selcate(this)\"><span class=\"entranceword\">女装</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='menswear' onclick=\"selcate(this)\"><span class=\"entranceword\">男装</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='kidswear' onclick=\"selcate(this)\"><span class=\"entranceword\">童装</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='womensshoes' onclick=\"selcate(this)\"><span class=\"entranceword\">女鞋</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='mensshoes' onclick=\"selcate(this)\"><span class=\"entranceword\">男鞋</span></span>"
+                if (dtype != 3) {
+                    html += "<span class=\"cateentrance tb othertab\" cate='travel' onclick=\"selcate(this)\"><span class=\"entranceword\">旅行</span></span>"
+                }
+                html += "<span class=\"cateentrance tb othertab\" cate='sale' onclick=\"selcate(this)\"><span class=\"entranceword\">促销</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='disinfect' onclick=\"selcate(this)\"><span class=\"entranceword\">防疫</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='automobile' onclick=\"selcate(this)\"><span class=\"entranceword\">汽车用品</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='sport' onclick=\"selcate(this)\"><span class=\"entranceword\">运动户外</span></span>"
+                html += "<span class=\"cateentrance tb othertab\" cate='amusement' onclick=\"selcate(this)\"><span class=\"entranceword\">娱乐充值</span></span>"
+
+                html += "</div>";
+
+                layer.open({
+                    type: 1
+                    , content: html
+                    , anim: 'up'
+                    , style: 'position:fixed; bottom:0; left:0; width: 100%; height: 280px; padding:10px 0; border:none;'
+                });
+            });
+        }
+
+        function closeBox() {
+            layer.closeAll();
+        }
+        function showPic(url) {
+            layer.open({
+                content: "<img src=\"" + url + "\" style=\"width:100%;height:100%;\" />"
+                , style: '',
+                btn: '关闭',
+                yes: function () {
+                    layer.closeAll();
+                }
+            });
+
+        }
+        function showHFPic(url) {
+
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 1,
+                area: ['auto'],
+                //skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: "<img src=\"" + url + "\" style=\"width:100%;height:100%;\" />"
+            });
+        }
+
+        function jsonpcallback(data) {
+            $.each(data, function (i) {
+                console.log("[" + i + "] " + data[i].Contents);
+            });
+        }
+
+        function getData(page, hasNew) {
+            var keyword = key;
+            $("#loading").show();
+            $.ajax({
+                type: "get",
+                url: "http://81.68.251.162/api/handle", // 这个就是不同于当前域的一个URL地址，这里单纯演示，所以同域
+                dataType: "jsonp",
+                jsonp: "jsonpcallback",  // 指定回调函数，这里名字可以为其他任意你喜欢的，比如callback，不过必须与下一行的GET参数一致
+                data: "op=getTips&page=" + page + "&key=" + keyword + "&timestamp=" + timestamp + "&type=" + dtype + "&cate=" + dcate + "&jsonpcallback=?", // jsonpcallback与上面的jsonp值一致
+                success: function (data) {
+                    if (data.length > 0) {
+                        $("#loading").fadeOut(2000);
+                        var html = "";
+                        rownum = data.length;
+                        $.each(data, function (i) {
+                            if (!data[i].IsHot && isFirst) {
+                                timestamp = data[i].timestamp;
+                                isFirst = false;
+                            }
+                            if (data[i].IsHot) {
+                                html += "<div style=\"float:right\"><span style=\"color: #ff998a;font-size: 12px;margin-top: 0px;display: block;padding:20px;\">置顶</span></div>";
+                            }
+                            html += "<div class=\"item\">"
+                            html += "<div class=\"leftcontent\">"
+                            html += "<a class=\"title\" href=\"#" + data[i].ID + "\">"
+                            if (data[i].title != null) {
+                                html += data[i].title
+                            }
+
+                            html += "</a><div class=\"clear\"></div>"
+                            html += "<div class=\"infoandabstract\">"
+                            html += "<div class=\"abstract\" id=\"abstract" + data[i].ID + "\" >" + data[i].Contents + "</div>"
+                            html += "<div class=\"clear\"></div>"
+                            if (data[i].PicUrl != "" && data[i].PicUrl != null) {
+                                html += "<a class=\"thumbnail\" href=\"javascript:showPic('../temp/" + data[i].PicUrl.replace("-s", "") + "');\">"
+                                html += "<img src=\"temp/" + data[i].PicUrl + "\" alt=\"" + data[i].title + "\" style=\"width:100px;height=120pxmargin-left:0px;margin-top:0px;margin-bottom:0px;margin-right:0px;\">"
+                                html += "</a>"
+                            }
+                            html += "<div class=\"clear\"></div>"
+                            html += "<div class=\"mallname\">" + (data[i].FromPlat != null && data[i].FromPlat != "" ? data[i].FromPlat : "") + "&nbsp;&nbsp;" + (data[i].shop_title != null && data[i].shop_title != "" ? data[i].shop_title : "") + "</div>"
+
+                            html += "<div class=\"info\"><span class=\"latesttime\">" + $.timeago(timestampToTime(data[i].timestamp)) + "</span>&nbsp;同步</div>"
+                            html += "<div class=\"clear\"></div>"
+                            if (!iswx) {
+                                if (data[i].shut_url != null && data[i].shut_url != "") {
+                                    html += "<a class=\"buy\" isconvert=\"1\" href=\"" + data[i].shut_url + "\" target=\"_blank\"><span class=\"buyword\">直达链接></span></a>"
+                                }
+                                else {
+                                    if (data[i].KeyCode != "" && data[i].KeyCode != null) {
+                                        html += "<a class=\"buy\" ><button class=\"btn\" style=\"color:#ffffff;border:0px;outline:none;background-color:transparent;border-style:none;\"  data-clipboard-text=\"" + data[i].KeyCode + "\"><span class=\"buyword\">复制淘口令</span></button></a>";
+                                    }
+                                    else if (data[i].type == 3) {
+                                        html += "<a class=\"buy\" isconvert=\"1\" href=\"go?id=" + data[i].ID + "\" target=\"_blank\"><span class=\"buyword\">直达链接></span></a>"
+                                    }
+                                }
+                            }
+                            else {
+                                if (data[i].KeyCode != "" && data[i].KeyCode != null) {
+                                    html += "<a class=\"buy\" ><button class=\"btn\" style=\"color:#ffffff;border:0px;outline:none;background-color:transparent;border-style:none;\"  data-clipboard-text=\"" + data[i].KeyCode + "\"><span class=\"buyword\">复制淘口令</span></button></a>";
+                                }
+                                else {
+                                    if (data[i].shut_url != null && data[i].shut_url != "") {
+                                        html += "<a class=\"buy\" isconvert=\"1\" href=\"" + data[i].shut_url + "\" target=\"_blank\"><span class=\"buyword\">直达链接></span></a>"
+                                    }
+                                    else if (data[i].type == 3) {
+                                        html += "<a class=\"buy\" isconvert=\"1\" href=\"go?id=" + data[i].ID + "\" target=\"_blank\"><span class=\"buyword\">直达链接></span></a>"
+                                    }
+                                }
+
+                            }
+                            if (data[i].IsDesc) {
+
+                                html += "<div class=\"more\" id=\"desc" + data[i].ID + "\" onclick=\"showDetail(" + data[i].ID + ")\"><span class=\"moreword\">展开全文</span></div>";
+                            }
+
+                            html += "</div>"
+                            html += "</div>"
+                            html += "</div>"
+                            html += "<div class=\"clear\"></div>";
+                        });
+                        if (hasNew) {
+                            $("#listarea").html("");
+                        }
+                        $("#listarea").append(html);
+                        page++;
+                    }
+                    else {
+                        if (page > 1) {
+                            $("#loading").html('<span class="loadingmoreword">已到底了...</span>');
+                            $("#loading").fadeOut(3000);
+                            isFin = true;
+                        }
+                        else {
+                            $("#loading").fadeOut(3000);
+                            if (key != "") { $("#listarea").html("当前未找到【" + key + "】相关线报,数据只保留了最近三天，也可以点击<a href=\"m/search?key=" + key + "\" target=\"_blank\">自助搜券</a>找找优惠券"); }
+                            else { $("#listarea").html("同步中..."); }
+                        }
+                    }
+                }
+            });
+
+        }
+        function checkHasNew() {
+            var keyword = key;
+            var urlData = { op: "ChkHasNew", key: keyword, timestamp: timestamp, type: dtype };
+            $.post("api/SearchVideo.ashx", urlData, function (data) {
+                if (data.Flag > 0) { $("#back-top").html("新折扣<div class=\"nav-counter nav-counter-blue\">" + data.Flag + "</div>"); hasNew = true; }
+                else { $("#back-top").html("Top"); hasNew = false; }
+            });
+        }
+        function sbscr() {
+            var query = $("#searchfixfield").val().trim();
+            if (query != "") {
+                key = query;
+                dtype = -1;
+                dcate = "";
+                layer.closeAll();
+                $(".searchres").html("搜索结果>>")
+                go(5);
+
+                $("#searchfixfield").val("");
+                $('body,html').animate({ scrollTop: 0 }, 800);
+            }
+            else {
+                $("#searchfixfield").val("");
+                layer.open({ content: "请输入商品关键词！", style: 'background-color:#09C1FF; color:#fff; border:none;width:210px;height=105px', time: 1 });
+            }
+        }
+        function clickButton() {
+            if (event.keyCode == 13) {
+                sbscr();
+            }
+        }
+        function selcate(obj) {
+            var cate = $(obj).attr("cate");
+            var catename = $(obj).text();
+            dcate = cate;
+            //dtype = 1;
+            key = "";
+            go(5);
+            layer.closeAll();
+            $(".searchres").html(catename + ">>");
+
+            $('body,html').animate({ scrollTop: 0 }, 0);
+        }
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return decodeURI(r[2]); return null; //返回参数值
+        }
+        function go(type) {
+            tab = type;
+            if (type == 0) {
+                $(".searchres").hide();
+                $("#notices").html("“云线报”是集国内、海淘主流电商平台不定期促销活动、降价推送、内部线报、首单福利等等为主要功能的实时线报同步平台，线报时效很快库存随时撸空/变价，手慢拍大腿，尤其是晚上定点限量半价叠加券活动，神价特别给力秒杀全网所有平台，商品不管自用还是转手都有利润！")
+                $("#notices").show();
+                $("#category").hide();
+                if ($(window).scrollTop() > 800) {
+                    $("#back-top").show();
+                }
+                $(".tb").removeClass("othertab");
+                $(".tb").addClass("currenttab");
+                $(".gn").removeClass("currenttab");
+                $(".gn").addClass("othertab");
+                $(".ht").removeClass("currenttab");
+                $(".ht").addClass("othertab");
+                $(".mt").removeClass("currenttab");
+                $(".mt").addClass("othertab");
+                $(".elm").removeClass("currenttab");
+                $(".elm").addClass("othertab");
+                $(".video").removeClass("currenttab");
+                $(".video").addClass("othertab");
+                $(".ticket").removeClass("currenttab");
+                $(".ticket").addClass("othertab");
+                $(".sd").removeClass("currenttab");
+                $(".sd").addClass("othertab");
+                $(".hf").removeClass("currenttab");
+                $(".hf").addClass("othertab");
+                $(".searchres").removeClass("currenttab");
+                $(".searchres").addClass("othertab");
+
+                lock = false; isFin = false; page = 1; dtype = 0; dcate = ""; key = ""; timestamp = ""; isFirst = true; getData(page, true); page++;
+                $('body,html').animate({ scrollTop: 0 }, 800);
+            }
+            if (type == 1) {
+                window.open("https://tb.g2h3.com/40SSa");
+            }
+            if (type == 2) {
+                lock = true;
+                $(".searchres").hide();
+                $("#notices").hide();
+                $("#category").hide();
+                $("#back-top").hide();
+                $(".tb").addClass("othertab");
+                $(".tb").removeClass("currenttab");
+                $(".gn").removeClass("currenttab");
+                $(".gn").addClass("othertab");
+                $(".ht").removeClass("currenttab");
+                $(".ht").addClass("othertab");
+                $(".mt").addClass("othertab");
+                $(".mt").removeClass("currenttab");
+                $(".elm").addClass("currenttab");
+                $(".elm").removeClass("othertab");
+                $(".video").removeClass("currenttab");
+                $(".video").addClass("othertab");
+                $(".ticket").removeClass("currenttab");
+                $(".ticket").addClass("othertab");
+                $(".sd").removeClass("currenttab");
+                $(".sd").addClass("othertab");
+                $(".hf").removeClass("currenttab");
+                $(".hf").addClass("othertab");
+                $(".searchres").removeClass("currenttab");
+                $(".searchres").addClass("othertab");
+                $("#main").attr("height", "400px");
+                rownum = 0;
+                $("#listarea").html("<div style=\"height:400px;\"><iframe width=\"100%\" height=\"400px;\" id=\"submain\" src=\"../api/ticket.html?v=" + Math.floor(Math.random() * 100000 + 1) + "\" border=\"0\" marginwidth=\"0\" marginheight=\"0\" frameborder=\"0\" scrolling=\"yes\" onload=\"this.height=document.body.scrollHeight\" style=\"display:none;\"></iframe></div>");
+                $("#submain").show();
+            }
+            if (type == 3) {
+                lock = true;
+                $(".searchres").hide();
+                $("#notices").hide();
+                $("#category").hide();
+                $("#back-top").hide();
+                $(".tb").addClass("othertab");
+                $(".tb").removeClass("currenttab");
+                $(".gn").removeClass("currenttab");
+                $(".gn").addClass("othertab");
+                $(".ht").removeClass("currenttab");
+                $(".ht").addClass("othertab");
+                $(".mt").addClass("othertab");
+                $(".mt").removeClass("currenttab");
+                $(".elm").addClass("currenttab");
+                $(".elm").removeClass("othertab");
+                $(".video").removeClass("currenttab");
+                $(".video").addClass("othertab");
+                $(".ticket").removeClass("currenttab");
+                $(".ticket").addClass("othertab");
+                $(".sd").removeClass("currenttab");
+                $(".sd").addClass("othertab");
+                $(".hf").removeClass("currenttab");
+                $(".hf").addClass("othertab");
+                $(".searchres").removeClass("currenttab");
+                $(".searchres").addClass("othertab");
+                $("#main").attr("height", "800px");
+                rownum = 0;
+                var src = "/";
+                if (window.location.search.indexOf("vurl") > -1) {
+                    src = window.location.search.substr(1).replace("vurl=", "");
+                }
+                if (GetQueryString("key") != "" && GetQueryString("key") != null) {
+                    src = "/?key=" + GetQueryString("key");
+                }
+                $("#listarea").html("<div style=\"height:800px;\"><iframe width=\"100%\" id=\"submain\" src=\"" + src + "\" border=\"0\" marginwidth=\"0\" marginheight=\"0\" frameborder=\"0\" scrolling=\"yes\" onload=\"this.height=document.body.scrollHeight\" style=\"display:none;\"></iframe></div>");
+                $("#submain").show();
+            }
+            if (type == 4) {
+                window.location.href = "m/search";
+            }
+            if (type == 5) {
+                $(".searchres").show();
+                $("#notices").hide();
+                $("#category").show();
+                if ($(window).scrollTop() > 800) {
+                    $("#back-top").show();
+                }
+                $(".tb").addClass("othertab");
+                $(".tb").removeClass("currenttab");
+                $(".gn").removeClass("currenttab");
+                $(".gn").addClass("othertab");
+                $(".ht").removeClass("currenttab");
+                $(".ht").addClass("othertab");
+                $(".mt").addClass("othertab");
+                $(".mt").removeClass("currenttab");
+                $(".elm").addClass("othertab");
+                $(".elm").removeClass("currenttab");
+                $(".video").removeClass("currenttab");
+                $(".video").addClass("othertab");
+                $(".ticket").removeClass("currenttab");
+                $(".ticket").addClass("othertab");
+                $(".sd").removeClass("currenttab");
+                $(".sd").addClass("othertab");
+                $(".hf").removeClass("currenttab");
+                $(".hf").addClass("othertab");
+                $(".searchres").addClass("currenttab");
+                $(".searchres").removeClass("othertab");
+                lock = false; page = 1; timestamp = ""; isFirst = true; getData(page, true); page++;
+            }
+            else if (type == 6) {
+                $(".searchres").hide();
+                $("#notices").hide();
+                if ($(window).scrollTop() > 800) {
+                    $("#category").show();
+                    $("#back-top").show();
+                }
+                $(".tb").removeClass("currenttab");
+                $(".tb").addClass("othertab");
+                $(".gn").removeClass("othertab");
+                $(".gn").addClass("currenttab");
+                $(".ht").removeClass("currenttab");
+                $(".ht").addClass("othertab");
+                $(".mt").removeClass("currenttab");
+                $(".mt").addClass("othertab");
+                $(".elm").removeClass("currenttab");
+                $(".elm").addClass("othertab");
+                $(".video").removeClass("currenttab");
+                $(".video").addClass("othertab");
+                $(".ticket").removeClass("currenttab");
+                $(".ticket").addClass("othertab");
+                $(".sd").removeClass("currenttab");
+                $(".sd").addClass("othertab");
+                $(".hf").removeClass("currenttab");
+                $(".hf").addClass("othertab");
+                $(".searchres").removeClass("currenttab");
+                $(".searchres").addClass("othertab");
+                lock = false; isFin = false; page = 1; dtype = 1; key = ""; dcate = ""; timestamp = ""; isFirst = true; getData(page, true); page++;
+                $('body,html').animate({ scrollTop: 0 }, 800);
+            }
+            else if (type == 7) {
+                $(".searchres").hide();
+                $("#notices").html("公告：首单礼金红包每天都可以领（部分号可能看不到如需要可以换号试试），如领到5+可撸,反之等隔天继续拆首单礼金");
+                $("#notices").show();
+                $("#category").hide();
+                if ($(window).scrollTop() > 800) {
+                    $("#back-top").show();
+                }
+                $(".sd").removeClass("othertab");
+                $(".sd").addClass("currenttab");
+                $(".gn").removeClass("currenttab");
+                $(".gn").addClass("othertab");
+                $(".ht").removeClass("currenttab");
+                $(".ht").addClass("othertab");
+                $(".tb").removeClass("currenttab");
+                $(".tb").addClass("othertab");
+                $(".mt").removeClass("currenttab");
+                $(".mt").addClass("othertab");
+                $(".elm").removeClass("currenttab");
+                $(".elm").addClass("othertab");
+                $(".video").removeClass("currenttab");
+                $(".video").addClass("othertab");
+                $(".ticket").removeClass("currenttab");
+                $(".ticket").addClass("othertab");
+                $(".hf").removeClass("currenttab");
+                $(".hf").addClass("othertab");
+                $(".searchres").removeClass("currenttab");
+                $(".searchres").addClass("othertab");
+                lock = false; isFin = false; page = 1; dtype = 2; key = ""; dcate = ""; timestamp = ""; isFirst = true; getData(page, true); page++;
+                $('body,html').animate({ scrollTop: 0 }, 800);
+            }
+            else if (type == 8) {
+                $(".searchres").hide();
+                $("#notices").hide();
+                $("#category").hide();
+                if ($(window).scrollTop() > 800) {
+                    $("#back-top").show();
+                }
+                $(".ht").removeClass("othertab");
+                $(".ht").addClass("currenttab");
+                $(".gn").removeClass("currenttab");
+                $(".gn").addClass("othertab");
+                $(".sd").removeClass("currenttab");
+                $(".sd").addClass("othertab");
+                $(".tb").removeClass("currenttab");
+                $(".tb").addClass("othertab");
+                $(".mt").removeClass("currenttab");
+                $(".mt").addClass("othertab");
+                $(".elm").removeClass("currenttab");
+                $(".elm").addClass("othertab");
+                $(".video").removeClass("currenttab");
+                $(".video").addClass("othertab");
+                $(".ticket").removeClass("currenttab");
+                $(".ticket").addClass("othertab");
+                $(".hf").removeClass("currenttab");
+                $(".hf").addClass("othertab");
+                $(".searchres").removeClass("currenttab");
+                $(".searchres").addClass("othertab");
+                lock = false; isFin = false; page = 1; dtype = 3; key = ""; dcate = ""; timestamp = ""; isFirst = true; getData(page, true); page++;
+                $('body,html').animate({ scrollTop: 0 }, 800);
+            }
+            if (type == 9) {
+                window.open("https://tb.g2h3.com/476Cs");
+            }
+            else if (type == 10) {
+                $(".searchres").hide();
+                $("#notices").hide();
+                $("#category").hide();
+                if ($(window).scrollTop() > 800) {
+                    $("#back-top").show();
+                }
+                $(".hf").removeClass("othertab");
+                $(".hf").addClass("currenttab");
+                $(".ht").removeClass("currenttab");
+                $(".ht").addClass("othertab");
+                $(".gn").removeClass("currenttab");
+                $(".gn").addClass("othertab");
+                $(".sd").removeClass("currenttab");
+                $(".sd").addClass("othertab");
+                $(".tb").removeClass("currenttab");
+                $(".tb").addClass("othertab");
+                $(".mt").removeClass("currenttab");
+                $(".mt").addClass("othertab");
+                $(".elm").removeClass("currenttab");
+                $(".elm").addClass("othertab");
+                $(".video").removeClass("currenttab");
+                $(".video").addClass("othertab");
+                $(".ticket").removeClass("currenttab");
+                $(".ticket").addClass("othertab");
+                $(".searchres").removeClass("currenttab");
+                $(".searchres").addClass("othertab");
+                lock = false; isFin = false; page = 1; dtype = 4; key = ""; dcate = ""; timestamp = ""; isFirst = true; getData(page, true); page++;
+                $('body,html').animate({ scrollTop: 0 }, 800);
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
