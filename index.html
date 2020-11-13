@@ -10,7 +10,7 @@
             jsonp: "jsonpcallback",  // 指定回调函数，这里名字可以为其他任意你喜欢的，比如callback，不过必须与下一行的GET参数一致
             data: "op=getTips&page=1&key=&timestamp=&type=0&cate=&jsonpcallback=?", // jsonpcallback与上面的jsonp值一致
             success: function (json) {
-              console.log(json);
+              jsonpcallback(json);
             }
         });
         
