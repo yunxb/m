@@ -8,7 +8,7 @@
             url: "http://81.68.251.162/api/handle", // 这个就是不同于当前域的一个URL地址，这里单纯演示，所以同域
             dataType: "jsonp",
             jsonp: "jsonpcallback",  // 指定回调函数，这里名字可以为其他任意你喜欢的，比如callback，不过必须与下一行的GET参数一致
-            data: "op=getTips&page=1&key=&timestamp=&type=0&cate=", // jsonpcallback与上面的jsonp值一致
+            data: "op=getTips&page=1&key=&timestamp=&type=0&cate=&jsonpcallback=?", // jsonpcallback与上面的jsonp值一致
             success: function (json) {
               console.log(json);
             }
