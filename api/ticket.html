@@ -1,0 +1,477 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title></title>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            //屏蔽键盘事件
+            document.onkeydown = function () {
+                var e = window.event || arguments[0];
+                //F12
+                if (e.keyCode == 123) {
+                    return false;
+                    //Ctrl+Shift+I
+                } else if ((e.ctrlKey) && (e.shiftKey) && (e.keyCode == 73)) {
+                    return false;
+                    //Shift+F10
+                } else if ((e.shiftKey) && (e.keyCode == 121)) {
+                    return false;
+                    //Ctrl+U
+                } else if ((e.ctrlKey) && (e.keyCode == 85)) {
+                    return false;
+                }
+            };
+            //屏蔽鼠标右键
+            document.oncontextmenu = function () {
+                return false;
+            }
+        }
+    </script>
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
+    <style>
+        blockquote, body, dd, dir, dl, fieldset, figure, form, h1, h2, h3, h4, h5, h6, hr, input, legend, menu, ol, optgroup, p, pre, tbody, td, textarea, tfoot, th, thead, ul, xxx {
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            background: #FFFFFF;
+        }
+
+        ol, ul {
+            list-style-type: none;
+            list-style-image: none
+        }
+
+        body, button, input, select, textarea {
+            -ms-text-autospace: ideograph-alpha ideograph-numeric ideograph-parenthesis;
+            text-autospace: ideograph-alpha ideograph-numeric ideograph-parenthesis
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 400
+        }
+
+        * {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        body {
+            background: 1px dashed #f54d23;
+            border: 0.2px;
+            padding: 0.8px;
+        }
+
+        .beatHeader {
+            background: #494A4D;
+            height: 50px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .beatMain {
+            position: relative;
+            z-index: 2;
+            padding: 0 10px;
+        }
+
+            .beatMain .imgContainer {
+                padding: 0 16px;
+                margin-top: 5px;
+            }
+
+                .beatMain .imgContainer img {
+                    width: 100%;
+                    height: auto;
+                    box-shadow: 0px 3px 12px rgba(21, 0, 71, 0.16);
+                    margin: 0 auto;
+                }
+
+            .beatMain .imgContaine img {
+                width: 100%;
+                height: auto;
+                margin: 0 auto;
+            }
+
+            .beatMain .moonTitleContainer {
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.4);
+                margin-bottom: 16px;
+            }
+
+                .beatMain .moonTitleContainer span {
+                    color: #FF5500;
+                    margin-right: 16px;
+                }
+
+            .beatMain .itemContent {
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.80);
+                line-height: 21px;
+                text-align: left;
+                margin-bottom: 10px;
+            }
+
+            .beatMain .itemPrice {
+                font-family: STHeitiSC-Light;
+                font-size: 16px;
+                color: #FF5500;
+                line-height: 16.5px;
+                text-align: right;
+                margin-bottom: 10px;
+            }
+
+            .beatMain .itemTips {
+                font-size: 12px;
+                color: rgba(0,0,0,.4);
+                text-align: center;
+            }
+
+        .beatWord {
+            text-align: center;
+        }
+
+            .beatWord fieldset {
+                padding: 0.7em;
+                margin: 0 2px;
+                border: 1px dashed #f54d23;
+            }
+
+                .beatWord fieldset legend {
+                    border: none;
+                    font-size: 0.8rem;
+                    line-height: 20px;
+                    color: #fff;
+                    padding: 0 4px;
+                    background-color: #f54d23;
+                }
+
+            .beatWord button {
+                border: none;
+                font-size: 16px;
+                padding: 6px 40px;
+                display: inline-block;
+                margin: 10px auto;
+                border-radius: 6px;
+                color: #fff;
+                background-color: #FF6600;
+            }
+
+        .xxx fieldset {
+            padding: 0.3em;
+            margin: 0 2px;
+            border: 1px dashed #CC6699;
+        }
+
+        .xxx {
+            position: relative;
+            padding: 0 10px;
+            z-index: 10;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+    </style>
+
+    <!-- jdjd.dianzihsq.top Baidu tongji analytics -->
+
+
+
+</head>
+
+<div style="border: 1px ; max-width: 450px; margin: 0 auto;">
+    <body style="height:300px;">
+
+        <div class="beatMain">
+
+            <p class="itemContent">
+                <strong class="itemPrice"></strong>
+                <div id="item_title" style="font-size: 14px;margin-bottom: 5px;">
+            </p>
+        </div>
+        <div class="imgContainer">
+            <!-- <img id="img" src="/img.alicdn.com/bao/uploaded/i2/2981597322/TB1NGcDSFXXXXbZXFXXXXXXXXXX_!!0-item_pic.jpg"> -->
+            <img id="img" src="" alt="饿了么红包（开抢啦！）">
+        </div>
+        <div class="beatWord">
+            <fieldset>
+                <legend id="copy_tip">点击 “一键复制” > 打开手机淘宝 </legend>
+                <p id="itemWord" class="itemWord" style="font-size: 12px;">
+
+
+                </p>
+
+            </fieldset>
+
+            <!--
+                  <button id="coupons" type="button" data-clipboard-text="" class="itemCopy2" style="background: #99CC33;border: none;font-size: 16px;padding: 6px;display: inline-block;color: #fff;text-decoration: none;width:30%;">电脑链接</button>
+            -->
+            <button id="copy" type="button" data-clipboard-text="" class="itemCopy" style="width:95%;display: inline-block;">一 键 复 制</button>
+            <p id="itemDesc" class="itemWord" style="font-size: 12px;text-align:left;display:none;">
+                <font color="red">付款时切记不要使用超级、惊喜红包，会丢佣金或降佣，可用在无佣金商品上</font><br />
+                淘寳比价最新规则：<br />
+
+                对于近期已浏览过的商品，淘宝会认为已有购买意愿，再走小助手查券返佣渠道省钱下单，可能会被淘宝判定为【比价订单】，而动态降低佣金<br />
+
+                两个方法可规避<br />
+                1、最好等5-10分钟左右再复制口令去淘宝<br />
+                2、准备两个淘寳号，小号用来比价浏览商品分享给小助手，如价格合适确定要拍，淘宝切换回大号，复制口令用大号领券下单（略显麻烦）
+
+            </p>
+
+
+
+            <br />
+        </div>
+</div>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://"); document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1279348966'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s9.cnzz.com/z_stat.php%3Fid%3D1279348966%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+
+<script src="../Scripts/jquery-3.3.1.min.js"></script>
+<script src="../Scripts/clipboard.min.js"></script>
+<script>
+    var itemWord = "复制框内整段文字，打开「手淘」即可「获取饿了么红包每天领」";
+    var btnWord = "复制成功，打开淘宝自动弹出饿了么红包";
+    var title = "饿了么福利红包口令提取";
+    var key = "";
+    var image = "../imgs/elm_hb.jpg";
+    var taowords = '$JZvHcjAdnmL$';
+    function getParams(paras) {
+        var url = decodeURI(location.href);
+        // var url = location.href;
+        var paraString = url.substring(url.indexOf("?") + 1, url.length).split("&");
+        var returnValue;
+        for (i = 0; i < paraString.length; i++) {
+            var tempParas = paraString[i].split('=')[0];
+            var parasValue = paraString[i].split('=')[1];
+            if (tempParas === paras)
+                returnValue = parasValue;
+        }
+        if (typeof (returnValue) == "undefined") {
+            return "";
+        } else {
+            return returnValue;
+        }
+    }
+
+
+    $(function () {
+
+        var url = 'https://m.tb.cn/h.VAU5dWe';
+        var tempkey = getParams("key");
+
+        if (tempkey != "" && tempkey != null) {
+            //var temp = tempkey.split("and");
+            //if (temp.length > 0) {
+            //    key = temp[0];
+            //    image = temp[1];
+            //}
+            key = tempkey;
+            if (key != null && key != "") {
+                var tempimg = getParams("pic");
+                if (tempimg != "" && tempimg != null) {
+                    image = tempimg;
+                }
+                else {
+                    image = "http://52892.com/api/tklimg.asp?tkl=" + key;
+                }
+                taowords = Math.floor(Math.random() * 9 + 1) + "$" + key + "$" + "/:/";
+                $("#itemDesc").show();
+
+                itemWord = "复制框内整段文字，打开「手淘」即可";
+                btnWord = "复制成功，打开【手淘】即可";
+                title = "云线报---口令提取";
+
+            }
+        }
+        $(document).attr("title", title);
+
+        itemWord += "<span id=\"taokey\">" + taowords + "</span>";
+        $('#itemWord').html(itemWord);
+
+        if (image) {
+            $('#img').attr('src', image);
+        }
+        else { $('#img').hide() }
+        $('#coupons').attr('data-clipboard-text', url);
+        $('#copy').attr('data-clipboard-text', taowords);
+    })
+
+
+    //复制文本
+    var clipboard = new ClipboardJS('.itemCopy');
+    clipboard.on('success',
+        function (e) {
+            if (e.trigger.disabled == false || e.trigger.disabled == undefined) {
+                e.trigger.innerHTML = btnWord;
+                e.trigger.style.backgroundColor = "#9ED29E";
+                e.trigger.style.borderColor = "#9ED29E";
+                //e.clearSelection();
+                e.trigger.disabled = true;
+                //2秒后按钮恢复原状
+                setTimeout(function () {
+                    e.trigger.innerHTML = "一键复制";
+                    e.trigger.style.backgroundColor = "#FF6600";
+                    e.trigger.style.borderColor = "#f54d23";
+                    e.trigger.disabled = false;
+                },
+                    2000);
+            }
+        });
+
+    clipboard.on('error',
+        function (e) {
+            e.trigger.innerHTML = "复制失败";
+            e.trigger.style.backgroundColor = "#8f8f8f";
+            e.trigger.style.borderColor = "#8f8f8f";
+        });
+
+
+
+    clipboard.on('error',
+        function (e) {
+            e.trigger.innerHTML = "复制失败";
+            e.trigger.style.backgroundColor = "#8f8f8f";
+            e.trigger.style.borderColor = "#8f8f8f";
+        });
+
+    var clipboard = new ClipboardJS('.itemCopy2');
+    clipboard.on('success',
+        function (e) {
+            if (e.trigger.disabled == false || e.trigger.disabled == undefined) {
+                e.trigger.innerHTML = "PC连接复制成功，请到电脑浏览器粘贴访问";
+                e.trigger.style.backgroundColor = "#9ED29E";
+                e.trigger.style.borderColor = "#9ED29E";
+                //e.clearSelection();
+                e.trigger.disabled = true;
+                //2秒后按钮恢复原状
+                setTimeout(function () {
+                    e.trigger.innerHTML = "电脑链接";
+                    e.trigger.style.backgroundColor = "#99CC33";
+                    e.trigger.style.borderColor = "#f54d23";
+                    e.trigger.disabled = false;
+                },
+                    2000);
+            }
+        });
+
+    clipboard.on('error',
+        function (e) {
+            e.trigger.innerHTML = "复制失败";
+            e.trigger.style.backgroundColor = "#8f8f8f";
+            e.trigger.style.borderColor = "#99CC33";
+        });
+
+    $(function () {
+
+        //UA判断
+        var isShow = 0; //控制是否显示一键复制按钮
+        var ua = navigator.userAgent.toLowerCase();
+
+        if (ua.match(/iphone/i) == "iphone" || ua.match(/ipad/i) == "ipad") {
+
+            $('#copy_tip').text("长按框内 > 拷贝 > 打开手淘");
+            var iphoneInfo = ua.match(/iphone os (\d{1,})/i);
+            var iosVersion = iphoneInfo[1];
+            if (iosVersion >= 10 || ua.match(/ipad/i) == 'ipad') {
+                $('.itemCopy').show();
+            }
+
+        } else {
+            $('.itemCopy').show();
+        }
+
+        //自动选中
+        var beat = document.querySelector('.beatWord');
+        var word = document.querySelector('.itemWord');
+        var copy = document.querySelector('.itemCopy');
+        document.addEventListener("selectionchange",
+            function (e) {
+                window.getSelection().selectAllChildren(word);
+            },
+            false);
+    });
+</script>
+
+
+
+<style>
+    div#mainTab1 {
+        position: fixed;
+        top: 5px;
+        display: table;
+        width: 100%;
+        font-size: 11px;
+        z-index: 99;
+        width: 20%;
+    }
+
+    div#mainTab2 {
+        position: fixed;
+        bottom: 0px;
+        display: table;
+        width: 100%;
+        font-size: 12px;
+        z-index: 99;
+        border: 0.5px solid #CCCCCC;
+    }
+
+    div#mainTab3 {
+        position: fixed;
+        top: 5px;
+        right: 0px;
+        display: table;
+        font-size: 11px;
+        z-index: 99;
+        width: 20%;
+    }
+
+    ul {
+        display: table-row-group;
+    }
+
+        ul li {
+            display: table-cell;
+        }
+
+    li a:hover:not(.active) {
+        color: red;
+    }
+
+    div#mainTab2 li a:hover:not(.active) {
+        color: red;
+    }
+
+    .active {
+        background-color: #4CAF50;
+    }
+
+    li a {
+        display: block;
+        color: #000000;
+        text-decoration: none;
+        padding-top: 2px;
+        text-align: center;
+    }
+
+    div#mainTab2 li a {
+        display: block;
+        color: #000000;
+        text-decoration: none;
+        padding-top: 4px;
+        background-color: #FFFFFF;
+        text-align: center;
+    }
+</style>
+
+
+
+
+</body>
+</html>
