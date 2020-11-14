@@ -6,7 +6,7 @@
         $(function () {
             $.ajax({
                 type: "get",
-                url: "http://81.68.251.162/api/handle", // 这个就是不同于当前域的一个URL地址，这里单纯演示，所以同域
+                url: "//yunxb.top/api/handle", // 这个就是不同于当前域的一个URL地址，这里单纯演示，所以同域
                 dataType: "jsonp",
                 jsonp: "jsonpcallback",  // 指定回调函数，这里名字可以为其他任意你喜欢的，比如callback，不过必须与下一行的GET参数一致
                 data: "op=getTips&page=1&key=&timestamp=&type=0&cate=&jsonpcallback=?", // jsonpcallback与上面的jsonp值一致
@@ -26,7 +26,7 @@
 <body>
     <div class="container">
         
-        <iframe src="//81.68.251.162/tips" id="info-frame" width="100%" height="100%"></iframe>
+        <iframe src="//81.68.251.162/tips" id="info-frame"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" width="100%" height="100%"></iframe>
         </div>
 
 
