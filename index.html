@@ -1,54 +1,79 @@
-<html>
+﻿
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
 <head>
 
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <title>云线报-实时同步全网折扣</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-        }
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        .container {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $.ajax({
-                type: "get",
-                url: "http://81.68.251.162/api/handle", // 这个就是不同于当前域的一个URL地址，这里单纯演示，所以同域
-                dataType: "jsonp",
-                jsonp: "jsonpcallback",  // 指定回调函数，这里名字可以为其他任意你喜欢的，比如callback，不过必须与下一行的GET参数一致
-                data: "op=getTips&page=1&key=&timestamp=&type=0&cate=&jsonpcallback=?", // jsonpcallback与上面的jsonp值一致
-                success: function (json) {
-                    jsonpcallback(json);
-                }
-            });
-        });
+    <title>云线报.com - 淘宝省钱领优惠券</title>
 
-        function jsonpcallback(data) {
-            $.each(data, function (i) {
-                console.log("[" + i + "] " + data[i].Contents);
-            });
-        }
-    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="renderer" content="webkit">
+
+    <link rel="stylesheet" href="css/style_yhq.css">
+    <meta name="baidu-site-verification" content="code-HK4oWWKDQi" />
 </head>
+
+
+
+
+
 <body>
-    <!--<div class="container">
-        
-        <iframe src="//81.68.251.162/tips" id="info-frame"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" width="100%" height="100%"></iframe>
-        </div>-->
-    demo
+    <div>
+
+        <div class="tc"><img src="imgs/lq.png" width="90%" /></div>
+
+        <div class="main">
+
+            <div class="title">微信扫码即可领券</div>
+
+            <div class="tc"><img src="imgs/robot.jpg" width="50%" height="50%" /></div>
+
+            <div class="tit-t">长按二维码图片,保存到手机</div>
+
+            <div class="arr"><img src="imgs/arr.png" alt="" style="width: 16px;"></div>
+
+            <div class="tit-t tc">
+
+                <p>打开微信右上角+ 号图标 <img src="imgs/jia.png" alt="" width="16">-&gt; 扫一扫</p>
+
+                <p style="margin-top:5px;">再点击右下方图标 <img src="imgs/xc.png" alt="" width="16"> -&gt; 选择相册中的二维码</p>
+
+            </div>
+
+            <!--<div class="title2">也可以直接搜索微信公众号:</div>-->
+
+            <div class="title2"><font color="red">7*24小时在线领券</font></div>
+
+            <!--<div class="title3">扫上面二维码领券</div>-->
+
+        </div>
+
+    </div>
+
+    <footer>
+
+        <p class="foot">by: 云线报.com-淘宝领券</p>
+
+
+   
+    </footer>
 
 </body>
-  </html>
+
+
+
+<div style="display:none">
+
+</div>
+
+
+
+</html>
+
