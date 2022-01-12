@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -218,6 +218,7 @@
                     <br />
                     1、付款时切记不要、不要、不要使用超级红包，100%丢佣金，可自己用在无/低佣金商品上！<br />
                     2、付款成功后，一般5分钟内小助手自动推送订单返佣消息，若超过5分钟以上无通知可复制对应订单号发给小助手进行绑定即可<br />
+                    3、如有多件商品购买需求，也可复制到淘宝添加到购物车后期合并付款，并不影响该有的订单返佣
                 </font>
             </p>
 
@@ -262,7 +263,7 @@
 
         var url = 'https://m.tb.cn/h.VAU5dWe';
         var tempkey = getParams("key");
-
+        var isOuter=getParams("isOuter");
         if (tempkey != "" && tempkey != null) {
             //var temp = tempkey.split("and");
             //if (temp.length > 0) {
@@ -276,11 +277,13 @@
                     image = tempimg;
                 }
                 else {
-                    image = "http://52892.com/api/tklimg.asp?tkl=" + key;
+                    image = "";
                 }
                 taowords = Math.floor(Math.random() * 9 + 1) + "$" + key + "$" + "/:/";
+                if (isOuter!=null)
+                {
                 $("#itemDesc").show();
-
+                }
                 itemWord = "复制框内整段文字，打开「手淘」即可";
                 btnWord = "复制成功，打开【手淘】即可";
                 title = "云线报---口令提取";
@@ -292,7 +295,7 @@
         itemWord += "<span id=\"taokey\">" + taowords + "</span>";
         $('#itemWord').html(itemWord);
 
-        if (image) {
+        if (image!="") {
             $('#img').attr('src', image);
         }
         else { $('#img').hide() }
