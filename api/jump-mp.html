@@ -12,32 +12,13 @@
     <!-- weui 样式 -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.4.1/weui.min.css"></link>
     <!-- 调试用的移动端 console -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/eruda"></script> -->
-    <!-- <script>eruda.init();</script> -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
     <!-- 公众号 JSSDK -->
     <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     <!-- 云开发 Web SDK -->
     <script src="https://res.wx.qq.com/open/js/cloudbase/1.1.0/cloud.js"></script>
     <script>
-
-     function getParams(paras) {
-        var url = decodeURI(location.href);
-        // var url = location.href;
-        var paraString = url.substring(url.indexOf("?") + 1, url.length).split("&");
-        var returnValue;
-        for (i = 0; i < paraString.length; i++) {
-            var tempParas = paraString[i].split('=')[0];
-            var parasValue = paraString[i].split('=')[1];
-            if (tempParas === paras)
-                returnValue = parasValue;
-        }
-        if (typeof (returnValue) == "undefined") {
-            return "";
-        } else {
-            return returnValue;
-        }
-      }
-
       function docReady(fn) {
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
           fn()
@@ -49,7 +30,7 @@
       docReady(async function() {
         var ua = navigator.userAgent.toLowerCase()
         var isWXWork = ua.match(/wxwork/i) == 'wxwork'
-        var isWeixin = !isWXWork && ua.match(/micromessenger/i) == 'micromessenger'
+        var isWeixin = !isWXWork && ua.match(/MicroMessenger/i) == 'micromessenger'
         var isMobile = false
         var isDesktop = false
         if (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|IEMobile)/i)) {
@@ -57,6 +38,10 @@
         } else {
           isDesktop = true
         }
+        console.warn('ua', ua)
+        console.warn(ua.match(/MicroMessenger/i) == 'micromessenger')
+        var m = ua.match(/MicroMessenger/i)
+        console.warn(m && m[0] === 'micromessenger')
 
         if (isWeixin) {
           var containerEl = document.getElementById('wechat-web-container')
@@ -76,11 +61,11 @@
 
           wx.config({
             // debug: true, // 调试时可开启
-            appId: 'wxece3a9a4c82f58c9', // <!-- replace -->
+            appId: 'wxe5f52902cf4de896', 
             timestamp: 0, // 必填，填任意数字即可
             nonceStr: 'nonceStr', // 必填，填任意非空字符串即可
             signature: 'signature', // 必填，填任意非空字符串即可
-            jsApiList: ['chooseImage'], // 必填，随意一个接口即可 
+            jsApiList: ['chooseImage'], // 安卓上必填一个，随机即可
             openTagList:['wx-open-launch-weapp'], // 填入打开小程序的开放标签名
           })
         } else if (isDesktop) {
@@ -88,7 +73,7 @@
           var containerEl = document.getElementById('desktop-web-container')
           containerEl.classList.remove('hidden')
           containerEl.classList.add('full', 'desktop-web-container')
-        }  else {
+        } else {
           var containerEl = document.getElementById('public-web-container')
           containerEl.classList.remove('hidden')
           containerEl.classList.add('full', 'public-web-container')
@@ -96,9 +81,9 @@
             // 必填，表示是未登录模式
             identityless: true,
             // 资源方 AppID
-            resourceAppid: 'wxece3a9a4c82f58c9', // <!-- replace -->
+            resourceAppid: 'wxe5f52902cf4de896',
             // 资源方环境 ID
-            resourceEnv: 'postpay-2g5hm2oxbbb721a4', // <!-- replace -->
+            resourceEnv: 'postpay-2g5hm2oxbbb721a4',
           })
           await c.init()
           window.c = c
@@ -198,16 +183,16 @@
   <body>
     <div class="page full">
       <div id="public-web-container" class="hidden">
-        <p class="">正在打开 饿了么...</p> <!-- replace -->
+        <p class="">正在打开 “小程序示例”...</p>
         <a id="public-web-jump-button" href="javascript:" class="weui-btn weui-btn_primary weui-btn_loading" onclick="openWeapp()">
           <span id="public-web-jump-button-loading" class="weui-primary-loading weui-primary-loading_transparent"><i class="weui-primary-loading__dot"></i></span>
           打开小程序
         </a>
       </div>
       <div id="wechat-web-container" class="hidden">
-        <p class="">点击以下按钮打开 饿了么</p> <!-- replace -->
+        <p class="">点击以下按钮打开 “小程序示例”</p>
         <!-- 跳转小程序的开放标签。文档 https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_Open_Tag.html -->
-        <wx-open-launch-weapp id="launch-btn" username="gh_6506303a12bb" path="pages/sharePid/web/index?scene=https://s.click.ele.me/d0RVxPu"> <!-- replace -->
+        <wx-open-launch-weapp id="launch-btn" username="gh_d43f693ca31f" path="/page/component/index">
           <template>
             <button style="width: 200px; height: 45px; text-align: center; font-size: 17px; display: block; margin: 0 auto; padding: 8px 24px; border: none; border-radius: 4px; background-color: #07c160; color:#fff;">打开小程序</button>
           </template>
